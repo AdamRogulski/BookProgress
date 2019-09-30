@@ -5,6 +5,9 @@ public class BookDTO {
     private Long bookId;
     private String title;
     private String image;
+    private int allPages;
+    private int pagesRead;
+    private boolean favourite;
 
     public Long getBookId() {
         return bookId;
@@ -28,5 +31,29 @@ public class BookDTO {
 
     public void setImage(String image) {
         this.image = image;
+    }
+
+    public int getAllPages() {
+        return allPages;
+    }
+
+    public void setAllPages(int allPages) {
+        this.allPages = allPages;
+    }
+
+    public int getPagesRead() {
+        return pagesRead;
+    }
+
+    public void setPagesRead(int pagesRead) {
+        this.pagesRead = pagesRead;
+    }
+
+    public boolean isFavourite() {
+        return favourite;
+    }
+
+    public void setFavourite(boolean favourite) {
+        this.favourite = favourite;
     }
 }

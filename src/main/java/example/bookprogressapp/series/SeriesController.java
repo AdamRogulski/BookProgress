@@ -4,8 +4,8 @@ import example.bookprogressapp.book.Book;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
+import java.util.Comparator;
 import java.util.List;
 
 @RestController
@@ -33,9 +33,15 @@ public class SeriesController {
         return seriesService.getOneSeriesById(id);
     }
 
-    @PostMapping("/series/add")
+    @PostMapping("/series/add/by")
     public ResponseEntity<String> addSeriesByTitle(@RequestParam String title){
         seriesService.addSeriesByTitle(title);
+        return new ResponseEntity<>("Series added", HttpStatus.OK);
+    }
+
+    @PostMapping("/series/add")
+    public ResponseEntity<String> addSeriesByBody(@RequestBody Series series){
+        seriesService.addSeriesBySeriesBody(series);
         return new ResponseEntity<>("Series added", HttpStatus.OK);
     }
 

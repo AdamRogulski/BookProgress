@@ -1,9 +1,12 @@
 package example.bookprogressapp.book;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import example.bookprogressapp.series.Series;
 
 import javax.persistence.*;
+import javax.validation.constraints.AssertFalse;
+import java.time.LocalDateTime;
 
 @Entity
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
@@ -15,6 +18,7 @@ public class Book {
 
     @Column(unique = true, nullable = false)
     private String title;
+
     @Lob
     private String description;
 
@@ -25,7 +29,12 @@ public class Book {
     private Series series;
 
     private String author;
-    private int readingStartDate;
+
+    @JsonFormat(pattern = "dd.MM.yyyy HH:mm")
+    private LocalDateTime addedDate = LocalDateTime.now();
+
+    private boolean favourite;
+
     private int allPages;
     private int pagesRead;
     private String imageURL;
@@ -70,12 +79,8 @@ public class Book {
         this.releaseYear = releaseYear;
     }
 
-    public int getReadingStartDate() {
-        return readingStartDate;
-    }
-
-    public void setReadingStartDate(int readingStartDate) {
-        this.readingStartDate = readingStartDate;
+    public LocalDateTime getAddedDate() {
+        return addedDate;
     }
 
     public int getAllPages() {
@@ -108,5 +113,13 @@ public class Book {
 
     public void setSeries(Series series) {
         this.series = series;
+    }
+
+    public boolean isFavourite() {
+        return favourite;
+    }
+
+    public void setFavourite(boolean favourite) {
+        this.favourite = favourite;
     }
 }

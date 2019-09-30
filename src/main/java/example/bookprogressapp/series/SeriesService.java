@@ -7,6 +7,7 @@ import example.bookprogressapp.book.BookService;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 @Service
@@ -26,6 +27,9 @@ public class SeriesService {
 
     List<SeriesDTO> getAllSeries(){
         List<Series> seriesList = seriesRepository.findAll();
+        for(Series s: seriesList){
+            s.getBooksList().sort(Comparator.comparing(Book::getAddedDate));
+        }
         return listToDTO(seriesList);
 
     }
@@ -37,6 +41,10 @@ public class SeriesService {
     void addSeriesByTitle(String title){
         Series series = new Series();
         series.setSeriesTitle(title);
+        seriesRepository.save(series);
+    }
+
+    void addSeriesBySeriesBody(Series series){
         seriesRepository.save(series);
     }
 
@@ -64,15 +72,22 @@ public class SeriesService {
             SeriesDTO seriesDTO = new SeriesDTO();
             seriesDTO.setSeriesId(s.getSeriesId());
             seriesDTO.setSeriesTitle(s.getSeriesTitle());
+            seriesDTO.setSeriesDescription(s.getSeriesDescription());
+            seriesDTO.setSeriesCreationTime(s.getSeriesCreationDate());
             List<BookDTO> bookDTOSList = new ArrayList<>();
             for (Book b : s.getBooksList()){
                 BookDTO bookDTO = new BookDTO();
                 bookDTO.setBookId(b.getBookId());
                 bookDTO.setImage(b.getImageURL());
                 bookDTO.setTitle(b.getTitle());
+                bookDTO.setFavourite(b.isFavourite());
+                bookDTO.setAllPages(b.getAllPages());
+                bookDTO.setPagesRead(b.getPagesRead());
                 bookDTOSList.add(bookDTO);
             }
             seriesDTO.setBooksList(bookDTOSList);
+            seriesDTO.setSeriesPagesRead(bookDTOSList.stream().mapToInt(BookDTO::getPagesRead).sum());
+            seriesDTO.setSeriesAllPages(bookDTOSList.stream().mapToInt(BookDTO::getAllPages).sum());
             seriesDTOList.add(seriesDTO);
         }
         return seriesDTOList;
@@ -82,6 +97,8 @@ public class SeriesService {
         SeriesDTO seriesDTO = new SeriesDTO();
         seriesDTO.setSeriesTitle(series.getSeriesTitle());
         seriesDTO.setSeriesId(series.getSeriesId());
+        seriesDTO.setSeriesCreationTime(series.getSeriesCreationDate());
+        seriesDTO.setSeriesDescription(series.getSeriesDescription());
 
         List<Book> bookList = series.getBooksList();
         List<BookDTO> bookDTOList = new ArrayList<>();
@@ -90,8 +107,13 @@ public class SeriesService {
             bookDTO.setTitle(b.getTitle());
             bookDTO.setImage(b.getImageURL());
             bookDTO.setBookId(b.getBookId());
+            bookDTO.setFavourite(b.isFavourite());
+            bookDTO.setPagesRead(b.getPagesRead());
+            bookDTO.setAllPages(b.getAllPages());
             bookDTOList.add(bookDTO);
         }
+        seriesDTO.setSeriesPagesRead(bookDTOList.stream().mapToInt(BookDTO::getPagesRead).sum());
+        seriesDTO.setSeriesAllPages(bookDTOList.stream().mapToInt(BookDTO::getAllPages).sum());
         seriesDTO.setBooksList(bookDTOList);
         return seriesDTO;
     }

@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import example.bookprogressapp.book.Book;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
@@ -17,6 +18,11 @@ public class Series {
 
     @Column(unique = true, nullable = false)
     private String seriesTitle;
+
+    @Lob
+    private String seriesDescription;
+
+    private LocalDateTime seriesCreationDate = LocalDateTime.now();
 
     @JsonIgnore
     @OneToMany(mappedBy = "series")
@@ -44,5 +50,17 @@ public class Series {
 
     public void setBooksList(List<Book> booksList) {
         this.booksList = booksList;
+    }
+
+    public String getSeriesDescription() {
+        return seriesDescription;
+    }
+
+    public void setSeriesDescription(String seriesDescription) {
+        this.seriesDescription = seriesDescription;
+    }
+
+    public LocalDateTime getSeriesCreationDate() {
+        return seriesCreationDate;
     }
 }
