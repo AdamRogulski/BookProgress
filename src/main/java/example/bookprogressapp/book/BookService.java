@@ -13,7 +13,7 @@ public class BookService {
         this.bookRepository = bookRepository;
     }
 
-    List<Book> getAllBooks(){
+    public List<Book> getAllBooks(){
         return bookRepository.findAll();
     }
 
@@ -33,6 +33,8 @@ public class BookService {
     }
 
     public void addBook(Book book){
+        if(book.getPagesRead() < book.getAllPages())
+            book.setPagesRead(book.getAllPages());
         bookRepository.save(book);
     }
 

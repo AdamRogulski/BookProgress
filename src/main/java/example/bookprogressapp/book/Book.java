@@ -5,7 +5,6 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import example.bookprogressapp.series.Series;
 
 import javax.persistence.*;
-import javax.validation.constraints.AssertFalse;
 import java.time.LocalDateTime;
 
 @Entity

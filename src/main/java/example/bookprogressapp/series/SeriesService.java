@@ -1,6 +1,5 @@
 package example.bookprogressapp.series;
 
-import com.sun.xml.internal.ws.server.sei.SEIInvokerTube;
 import example.bookprogressapp.book.Book;
 import example.bookprogressapp.book.BookDTO;
 import example.bookprogressapp.book.BookService;
@@ -27,6 +26,7 @@ public class SeriesService {
 
     List<SeriesDTO> getAllSeries(){
         List<Series> seriesList = seriesRepository.findAll();
+        seriesList.sort(Comparator.comparing(Series::getSeriesCreationDate).reversed());
         for(Series s: seriesList){
             s.getBooksList().sort(Comparator.comparing(Book::getAddedDate));
         }
