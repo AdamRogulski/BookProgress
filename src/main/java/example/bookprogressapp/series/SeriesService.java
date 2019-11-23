@@ -3,6 +3,9 @@ package example.bookprogressapp.series;
 import example.bookprogressapp.book.Book;
 import example.bookprogressapp.book.BookDTO;
 import example.bookprogressapp.book.BookService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -36,6 +39,11 @@ public class SeriesService {
 
     List<Book> getSeriesBooksById(Long seriesId){
         return seriesRepository.getOne(seriesId).getBooksList();
+    }
+
+    List<Series> getAllSeriesWithPagination(int pageNumber){
+        Pageable page = PageRequest.of(pageNumber,10);
+        return seriesRepository.findAll(page).getContent();
     }
 
     void addSeriesByTitle(String title){

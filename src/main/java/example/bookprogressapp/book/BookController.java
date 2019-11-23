@@ -2,8 +2,11 @@ package example.bookprogressapp.book;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+import java.sql.SQLException;
 import java.util.List;
 
 @RestController
@@ -48,7 +51,7 @@ public class BookController {
     }
 
     @PostMapping("/books/add")
-    public ResponseEntity<String> addBook(@RequestBody Book book){
+    public ResponseEntity<String> addBook(@RequestBody @Valid Book book){
         bookService.addBook(book);
         return new ResponseEntity<>("Book added", HttpStatus.OK);
     }

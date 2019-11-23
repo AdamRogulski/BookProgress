@@ -8,9 +8,11 @@ import java.util.List;
 public class BookService {
 
     private BookRepository bookRepository;
+    private BookEmailService bookEmailService;
 
-    public BookService(BookRepository bookRepository) {
+    public BookService(BookRepository bookRepository, BookEmailService bookEmailService) {
         this.bookRepository = bookRepository;
+        this.bookEmailService = bookEmailService;
     }
 
     public List<Book> getAllBooks(){
@@ -33,9 +35,14 @@ public class BookService {
     }
 
     public void addBook(Book book){
-        if(book.getPagesRead() < book.getAllPages())
+        if(book.getPagesRead() > book.getAllPages())
             book.setPagesRead(book.getAllPages());
         bookRepository.save(book);
+    }
+
+    public void addBookWithEmailNotification(Book book, String email){
+        addBook(book);
+        bookEmailService.sendEmail(book.getTitle(), book.getBookId(), email);
     }
 
     public Book getBookById(Long id){

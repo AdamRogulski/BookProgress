@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import example.bookprogressapp.series.Series;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
 import java.time.LocalDateTime;
 
 @Entity
@@ -16,6 +17,7 @@ public class Book {
     private Long bookId;
 
     @Column(unique = true, nullable = false)
+    @NotEmpty( message = "Title can not be empty!")
     private String title;
 
     @Lob

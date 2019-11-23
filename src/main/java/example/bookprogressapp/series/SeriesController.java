@@ -1,10 +1,12 @@
 package example.bookprogressapp.series;
 
 import example.bookprogressapp.book.Book;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.Comparator;
 import java.util.List;
 
@@ -33,6 +35,11 @@ public class SeriesController {
         return seriesService.getOneSeriesById(id);
     }
 
+    @GetMapping("/series123")
+    public List<Series> getAllWithPages(@RequestParam int page){
+        return seriesService.getAllSeriesWithPagination(page);
+    }
+
     @PostMapping("/series/add/by")
     public ResponseEntity<String> addSeriesByTitle(@RequestParam String title){
         seriesService.addSeriesByTitle(title);
@@ -40,7 +47,7 @@ public class SeriesController {
     }
 
     @PostMapping("/series/add")
-    public ResponseEntity<String> addSeriesByBody(@RequestBody Series series){
+    public ResponseEntity<String> addSeriesByBody(@RequestBody @Valid Series series){
         seriesService.addSeriesBySeriesBody(series);
         return new ResponseEntity<>("Series added", HttpStatus.OK);
     }
